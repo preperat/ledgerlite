@@ -1,0 +1,8 @@
+{
+  "limits": {
+    "max_rows": 2000,
+    "max_mismatches": 200,
+    "timeout_seconds": 30,
+    "_note": "values provisional, pending decision record"
+  }
+}
