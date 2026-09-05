@@ -25,6 +25,10 @@ def main(argv=None):
 
     mismatches = reconcile(rows_a, rows_b)
 
+    if len(mismatches) > limits["max_mismatches"]:
+        print(f"too many mismatches ({len(mismatches)}), truncating")
+        mismatches = mismatches[: limits["max_mismatches"]]
+
     if not mismatches:
         print("no mismatches found")
         return 0
