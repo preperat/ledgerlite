@@ -8,7 +8,16 @@ def load_rows(path):
         return list(csv.DictReader(handle))
 
 
+def _validate_row(row, line_number):
+    if not row.get("id", "").strip():
+        raise ValueError(f"row {line_number} is missing an id")
+    if not row.get("amount", "").strip():
+        raise ValueError(f"row {line_number} is missing an amount")
+
+
 def index_by_id(rows):
+    for number, row in enumerate(rows, start=1):
+        _validate_row(row, number)
     return {row["id"]: row for row in rows}
 
 
