@@ -37,4 +37,4 @@ def reconcile(rows_a, rows_b):
         if row_id not in left:
             mismatches.append(f"{row_id}: missing from a")
 
-    return mismatches
+    return sorted(mismatches)
