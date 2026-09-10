@@ -67,12 +67,22 @@ fi
 [ -n "$right" ] || die "could not determine the right pane ID"
 
 # 4. Start the agents. 5. Names are given at start, so no separate rename is needed.
-with_timeout 90 herdr agent start builder --kind claude --pane "$left" --timeout 60000 >/dev/null
-with_timeout 90 herdr agent start reviewer --kind codex --pane "$right" --timeout 60000 >/dev/null
-
-# 6. Both idle before anything is sent.
-with_timeout 90 herdr agent wait builder --until idle --timeout 60000 >/dev/null
-with_timeout 90 herdr agent wait reviewer --until idle --timeout 60000 >/dev/null
+# Claude Code asks whether to trust the folder on a fresh launch, which herdr reports
+# as blocked. Accept that one dialog; abort on anything else so it is seen, not guessed.
+start_agent() {
+  local name="$1" kind="$2" pane="$3" screen
+  if ! with_timeout 90 herdr agent start "$name" --kind "$kind" --pane "$pane" --timeout 60000 >/dev/null 2>&1; then
+    screen="$(with_timeout 10 herdr agent read "$name" --source visible --lines 40 2>/dev/null || true)"
+    printf '%s' "$screen" | grep -q "trust this folder" \
+      || die "$name did not become ready and is not at the trust dialog:
+$screen"
+    with_timeout 10 herdr agent send-keys "$name" down enter >/dev/null
+  fi
+  # 6. Idle before anything is sent.
+  with_timeout 90 herdr agent wait "$name" --until idle --timeout 60000 >/dev/null
+}
+start_agent builder claude "$left"
+start_agent reviewer codex "$right"
 
 # 7. Prime the builder off camera so its answer on camera is fast.
 with_timeout 200 herdr agent prompt builder "$PRIME" --wait --timeout 180000 >/dev/null
