@@ -2,9 +2,7 @@
 
 This is a staged demo repository with deliberately planted discrepancies. It was
 built for a screen recording of one AI coding agent auditing another inside
-herdr, a terminal workspace manager for coding agents. The backlog is out of
-date on purpose, the limits in config.json are unratified on purpose, and one
-decision record is left half-written and uncommitted on purpose.
+herdr, a terminal workspace manager for coding agents.
 
 ## Reproduce it
 
