@@ -1,5 +1,19 @@
 # ledgerlite
 
+This is a staged demo repository with deliberately planted discrepancies. It was
+built for a screen recording of one AI coding agent auditing another inside
+herdr, a terminal workspace manager for coding agents. The backlog is out of
+date on purpose, the limits in config.json are unratified on purpose, and one
+decision record is left half-written and uncommitted on purpose.
+
+## Reproduce it
+
+1. Clone the repository.
+2. Run `scripts/setup-demo.sh` to recreate the untracked decision record.
+3. Follow DEMO.md for the setup, dry run, and recording steps.
+
+## The project
+
 ledgerlite is a small command line tool that reconciles two CSV exports and
 reports rows that do not match. It is meant for quick sanity checks between
 two systems that should agree on the same set of records, such as a source
