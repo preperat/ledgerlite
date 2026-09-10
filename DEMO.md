@@ -6,6 +6,15 @@ on the installed version): `herdr agent list`, `herdr agent rename`, `herdr agen
 
 ## Setup (off camera)
 
+Run `scripts/demo.sh` from any pane in the herdr session named "demo". It refuses to
+run anywhere else. It ensures the untracked decision record exists, creates a fresh tab
+with two side by side panes at the repo root, starts Claude Code on the left as "builder"
+and Codex on the right as "reviewer", waits for both to go idle, primes the builder with
+the read-the-repo prompt, redraws both panes, then prints the tab and pane IDs. Set the
+terminal width and font yourself first (step 1 below still applies).
+
+## Manual setup (if the script fails)
+
 1. Terminal at roughly 100 columns wide, larger font for phone-screen readability.
    Sidebar visible so agent state is on screen.
 2. Two panes side by side. Left: Claude Code started in this directory. Right: Codex
@@ -51,13 +60,17 @@ and answer sped up 3x to 4x. Prompt and answer stay at real time.
 
 ## Reset procedure
 
+Run `scripts/demo.sh --reset`. It stops both agents, closes the tab the script created,
+and runs `git checkout .`, leaving the untracked decision record in place. Manual
+fallback:
+
 1. `git checkout .` (discards no committed work; nothing here is meant to be edited)
 2. Leave `docs/decisions/0002-limits.md` alone, it is meant to stay untracked.
 3. Clear both panes.
 4. Optional, after a dry run or a bad take: both agents already hold the answer in
    conversation and the reviewer may skip the wait. To make the sidebar state change
    visible again, exit codex in the reviewer pane and start it fresh, then re-prime the
-   builder as in Setup step 4.
+   builder as in Manual setup step 4.
 
 ## Pre-record checklist
 
